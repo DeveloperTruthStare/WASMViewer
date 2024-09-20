@@ -62,6 +62,9 @@ func main() {
 		})
 	}
 
+	http.HandleFunc("/wasm_exec.js", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./wasm_exec.js")
+	})
 	http.HandleFunc("/main.html", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./main.html")
 	})
