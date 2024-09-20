@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<script src="wasm_exec.js"></script>
+<script>
+// Polyfill
+
+function loadWasm(fileName) {
+
+    if (!WebAssembly.instantiateStreaming) {
+        WebAssembly.instantiateStreaming = async (resp, importObject) => {
+            const source = await (await resp).arrayBuffer();
+            return await WebAssembly.instantiate(source, importObject);
+        };
+    }
+
+    const params = new URLSearchParams(window.location.search)
+    console.log("Fetching WASM File: " + params.get("wasmFile"))
+
+    const go = new Go();
+    WebAssembly.instantiateStreaming(fetch(fileName), go.importObject).then((result) => {
+        go.run(result.instance);
+    });
+}
+
+function  getWasmFileFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("wasmFile");
+}
+
+window.onload = function() {
+    const wasmFile = getWasmFileFromUrl();
+    console.log(wasmFile);
+    if (wasmFile) {
+        loadWasm(wasmFile);
+    } else {
+        console.error("No wasm file specified");
+    }
+}
+</script>

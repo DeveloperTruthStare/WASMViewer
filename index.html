@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ebiten/Go WASM Loader</title>
+    <script>
+        // Function to change iframe src based on button click
+        function loadWasmInIframe(wasmFile) {
+            const iframe = document.getElementById("wasmIframe");
+            // Set the src of the iframe with the wasm file as a query parameter
+            iframe.src = `main.html?wasmFile=${encodeURIComponent(wasmFile)}`;
+        }
+    </script>
+</head>
+<body>
+    <h1>Select which Ebiten/Go WASM module to load:</h1>
+    {{range .WasmFiles}}
+    <button onclick="loadWasmInIframe('{{.FileName}}')">Load {{.FileName}} File</button>
+    {{end}}
+    
+
+    <h2>Ebiten/Go WASM Loaded in iframe</h2>
+    <iframe id="wasmIframe" style="width: 100%; height: 500px; border: none; overflow: hidden;"></iframe>
+</body>
+</html>
